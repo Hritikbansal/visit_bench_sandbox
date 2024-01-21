@@ -53,7 +53,7 @@ def main():
     np.random.seed(2)
 
     instances = []
-    with open(leaderboard_jsonl) as f:
+    with open(args.leaderboard_jsonl) as f:
         for line in f:
             instances.append(json.loads(line.strip()))
 
