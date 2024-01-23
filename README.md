@@ -1,6 +1,6 @@
 # Visit Bench Leaderboard
 
-This repo contains code/instructions for updating the visit-bench leaderboard.
+This repo contains code/instructions for updating the visit-bench leaderboard. Link to leaderboard - [https://huggingface.co/spaces/mlfoundations/VisIT-Bench-Leaderboard](https://huggingface.co/spaces/mlfoundations/VisIT-Bench-Leaderboard)
 
 ## Commands to add a get ELO Rating for a Single Image model  
 
