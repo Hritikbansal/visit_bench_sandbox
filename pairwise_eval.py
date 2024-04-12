@@ -148,7 +148,7 @@ def generate_parsing_answer_request(query):
     return messages
 
 
-def extract_prediction_from_response(resp, query2resp=None, cache=None):
+def extract_prediction_from_response(engine, resp, query2resp=None, cache=None):
     selected = {'{}'.format(ch): int('response {} is better'.format(ch.lower()) in resp.lower()) for ch in 'AB'}
     if np.sum(list(selected.values())) == 1:
         for k, v in selected.items():
@@ -164,15 +164,15 @@ def extract_prediction_from_response(resp, query2resp=None, cache=None):
             api_result = None
             while api_result is None:
                 try:
-                    api_result = openai.ChatCompletion.create(
-                        model='gpt-3.5-turbo-0301',
+                    api_result = openai.chat.completions.create(
+                        model=engine,
                         messages=messages)
                 except Exception as e:
                     print(e)
                     print('TIMEOUT. Sleeping and trying again.')
                     time.sleep(3)
 
-            result = api_result['choices'][0]['message']['content']
+            result = api_result.choices[0].message.content
             cache.write(json.dumps(
                 {'query': query_as_key,
                  'response': result}) + '\n')
@@ -211,7 +211,7 @@ def judge(image_description,
 
         while api_result is None:
             try:
-                api_result = openai.ChatCompletion.create(
+                api_result = openai.chat.completions.create(
                     model=engine,
                     messages=messages)
             except Exception as e:
@@ -219,10 +219,10 @@ def judge(image_description,
                 print('TIMEOUT. Sleeping and trying again.')
                 time.sleep(3)
 
-        result = api_result['choices'][0]['message']['content']
+        result = api_result.choices[0].message.content
         cache_f.write(json.dumps(
             {'query': query_as_key,
              'response': result}) + '\n')
 
-    prediction = extract_prediction_from_response(result, query2resp=query2resp, cache=cache_f)
+    prediction = extract_prediction_from_response(engine, result, query2resp=query2resp, cache=cache_f)
     return prediction, result, messages

@@ -41,6 +41,9 @@ def parse_args():
 
     args = parser.parse_args()
 
+    print('args:')
+    print(args)
+
     args.cache = '{}_cache{}.jsonl'.format(args.engine, args.extra_cache_filename)
 
     print('writing predictions to {}'.format(args.cache))
